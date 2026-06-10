@@ -89,15 +89,17 @@ can't run a skill mid-outage. It's the Claude-side twin of `handoff.ts`:
 the whole session to a different engine and keep moving:
 
 ```bash
-npx tsx src/handoff.ts          # newest session for this cwd → codex exec takes over
+npx tsx src/handoff.ts          # newest session for this cwd → opens the interactive Codex TUI
 npx tsx src/handoff.ts --print  # preview the exact prompt Codex will receive
 ```
 
 It reads the current session's transcript from
 `~/.claude/projects/<cwd>/<session>.jsonl`, flattens it to a `User:/Claude:`
-dialogue (thinking dropped, tool calls summarized), and pipes the whole thing
-into `codex exec` with an instruction to pick up where Claude left off. Run it
-straight from your shell — since Claude can't run a skill mid-outage.
+dialogue (thinking dropped, tool calls summarized), stashes it to
+`.claude-resend/handoff.txt`, and launches the **interactive** Codex TUI seeded
+with a takeover prompt that points Codex at that file — so Codex reads the
+context and you keep working in it. Run it straight from your shell — since
+Claude can't run a skill mid-outage.
 
 ## How it works
 
@@ -109,7 +111,7 @@ straight from your shell — since Claude can't run a skill mid-outage.
 | `src/cli.ts`      | `send` / `resend` / `last` commands. |
 | `src/transcript.ts` | Finds the current session's JSONL transcript; flattens it to text and extracts the **last user message**. |
 | `src/resend.ts`   | Reads the **live session transcript**, waits out the outage (backoff), then **resumes your actual session interactively** (`claude -r <id>`) with your last message resent. No saved state needed. |
-| `src/handoff.ts`  | Pipes the **full session transcript** into `codex exec` so Codex takes over when Claude is down. |
+| `src/handoff.ts`  | Stashes the **full session transcript** to disk and opens the interactive Codex TUI so Codex takes over when Claude is down. |
 | `example/demo.ts` | The runnable working example above (uses an injected fake Claude). |
 | `example/interactive.ts` | Interactive demo — flip Claude up/down from the keyboard and watch the real watchdog react. |
 
