@@ -1,0 +1,4 @@
+node_modules/
+dist/
+.claude-resend/
+*.log
