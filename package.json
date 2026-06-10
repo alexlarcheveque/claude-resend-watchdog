@@ -6,20 +6,18 @@
   "license": "MIT",
   "author": "Alex Larcheveque",
   "bin": {
-    "claude-resend": "dist/cli.js"
+    "claude-resend": "dist/resend.js",
+    "claude-handoff": "dist/handoff.js"
   },
   "files": [
     "dist",
-    "README.md"
+    "README.md",
+    "LICENSE"
   ],
   "scripts": {
-    "demo": "tsx example/demo.ts",
-    "send": "tsx src/cli.ts send",
-    "resend": "tsx src/cli.ts resend",
-    "resend:session": "tsx src/resend.ts",
+    "resend": "tsx src/resend.ts",
     "handoff": "tsx src/handoff.ts",
-    "build": "tsc",
-    "start": "node dist/cli.js"
+    "build": "tsc"
   },
   "keywords": [
     "claude",
